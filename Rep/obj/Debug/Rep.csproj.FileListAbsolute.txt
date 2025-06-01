@@ -1,0 +1,4 @@
+C:\Users\Дмитрий\source\repos\Rep\Rep\obj\Debug\Rep.csproj.AssemblyReference.cache
+C:\Users\Дмитрий\source\repos\Rep\Rep\obj\Debug\Rep.csproj.CoreCompileInputs.cache
+C:\Users\Дмитрий\source\repos\Rep\Rep\obj\Debug\Rep.MainForm.resources
+C:\Users\Дмитрий\source\repos\Rep\Rep\obj\Debug\Rep.csproj.GenerateResource.cache
