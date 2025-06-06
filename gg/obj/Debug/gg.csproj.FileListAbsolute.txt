@@ -1,0 +1,4 @@
+C:\Users\Дмитрий\source\repos\gg\gg\obj\Debug\gg.csproj.AssemblyReference.cache
+C:\Users\Дмитрий\source\repos\gg\gg\obj\Debug\gg.Properties.Resources.resources
+C:\Users\Дмитрий\source\repos\gg\gg\obj\Debug\gg.csproj.GenerateResource.cache
+C:\Users\Дмитрий\source\repos\gg\gg\obj\Debug\gg.csproj.CoreCompileInputs.cache
