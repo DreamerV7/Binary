@@ -10,8 +10,6 @@ namespace DirectorySyncApp.Presenters
         private readonly IMainView _view;
         private readonly DirectorySynchronizer _synchronizer;
 
-        public object Directory { get; private set; }
-
         public MainPresenter(IMainView view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -57,7 +55,7 @@ namespace DirectorySyncApp.Presenters
 
             try
             {
-                _view.Log = "Сравнение директорий:\r\n";
+                _view.Log = "=== Результаты сравнения ===\r\n";
                 var changes = DirectoryComparer.Compare(_view.SourceDirectory, _view.TargetDirectory);
 
                 if (changes.Count == 0)
@@ -73,7 +71,8 @@ namespace DirectorySyncApp.Presenters
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сравнении: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при сравнении: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -83,14 +82,15 @@ namespace DirectorySyncApp.Presenters
 
             try
             {
-                _view.Log = "Начало синхронизации:\r\n";
+                _view.Log = "=== Начало синхронизации ===\r\n";
                 var changes = DirectoryComparer.Compare(_view.SourceDirectory, _view.TargetDirectory);
                 _synchronizer.Synchronize(changes);
-                _view.Log += "Синхронизация завершена\r\n";
+                _view.Log += "=== Синхронизация завершена ===\r\n";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при синхронизации: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при синхронизации: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -98,27 +98,27 @@ namespace DirectorySyncApp.Presenters
         {
             if (string.IsNullOrEmpty(_view.SourceDirectory) || string.IsNullOrEmpty(_view.TargetDirectory))
             {
-                MessageBox.Show("Пожалуйста, выберите обе директории", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Пожалуйста, выберите обе директории", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            if (!Directory.Exists(_view.SourceDirectory) || !Directory.Exists(_view.TargetDirectory))
-            {
-                MessageBox.Show("Одна или обе директории не существуют", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
             return true;
         }
 
         private string FormatChangeMessage(DirectoryComparer.ComparisonResult change)
         {
-            return change.Change switch
+            switch (change.Change)
             {
-                DirectoryComparer.ChangeType.Created => $"• Файл \"{change.FileName}\" создан\r\n",
-                DirectoryComparer.ChangeType.Updated => $"• Файл \"{change.FileName}\" изменен\r\n",
-                DirectoryComparer.ChangeType.Deleted => $"• Файл \"{change.FileName}\" удален\r\n",
-                _ => $"• Файл \"{change.FileName}\" - неизвестное изменение\r\n"
-            };
+                case DirectoryComparer.ChangeType.Created:
+                    return $"• Файл \"{change.FileName}\" создан\r\n";
+                case DirectoryComparer.ChangeType.Updated:
+                    return $"• Файл \"{change.FileName}\" изменен\r\n";
+                case DirectoryComparer.ChangeType.Deleted:
+                    return $"• Файл \"{change.FileName}\" удален\r\n";
+                default:
+                    return $"• Файл \"{change.FileName}\" - неизвестное изменение\r\n";
+            }
         }
 
         private void OnSyncActionPerformed(string message)

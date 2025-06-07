@@ -18,7 +18,7 @@ namespace DirectorySyncApp.Models
                 }
                 catch (Exception ex)
                 {
-                    SyncActionPerformed?.Invoke($"Ошибка при обработке файла {change.FileName}: {ex.Message}");
+                    SyncActionPerformed?.Invoke($"Ошибка: {ex.Message}");
                 }
             }
         }

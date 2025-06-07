@@ -21,8 +21,8 @@ namespace DirectorySyncApp.Models
         {
             var results = new List<ComparisonResult>();
 
-            if (!Directory.Exists(dir1) || !Directory.Exists(dir2))
-                return results;
+            if (!Directory.Exists(dir1)) throw new DirectoryNotFoundException($"Директория не найдена: {dir1}");
+            if (!Directory.Exists(dir2)) throw new DirectoryNotFoundException($"Директория не найдена: {dir2}");
 
             var files1 = GetFilesRecursive(dir1);
             var files2 = GetFilesRecursive(dir2);
@@ -67,15 +67,8 @@ namespace DirectorySyncApp.Models
 
         private static List<FileItem> GetFilesRecursive(string directory)
         {
-            try
-            {
-                return Directory.GetFiles(directory, "*", SearchOption.AllDirectories)
-                    .Select(f => new FileItem(f)).ToList();
-            }
-            catch
-            {
-                return new List<FileItem>();
-            }
+            return Directory.GetFiles(directory, "*", SearchOption.AllDirectories)
+                .Select(f => new FileItem(f)).ToList();
         }
 
         private static string GetRelativePath(string root, string fullPath)
